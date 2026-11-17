@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# modificat de Student A
 verifica_ip() {
     local hostname="$1"
     local ip="$2"
