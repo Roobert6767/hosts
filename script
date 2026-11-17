@@ -1,0 +1,27 @@
+#!/bin/bash
+
+verifica_ip() {
+    local hostname="$1"
+    local ip="$2"
+    local dns_server="$3"
+
+    local resolved_ip
+
+    resolved_ip=$(dig +short @"$dns_server" "$hostname" A | head -n 1)
+
+    if [[ "$resolved_ip" == "$ip" ]]; then
+        echo "$hostname ($ip): asociere valida"
+    else
+        echo "$hostname ($ip): asociere invalida"
+    fi
+}
+
+DNS_SERVER="8.8.8.8"
+
+while read -r ip hostname rest; do
+    [[ -z "$ip" || "$ip" =~ ^# ]] && continue
+
+    verifica_ip "$hostname" "$ip" "$DNS_SERVER"
+
+done < /etc/hosts
+
